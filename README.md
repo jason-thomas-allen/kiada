@@ -2,6 +2,8 @@
 
 Sample App from Kubernetes In Action 2nd Edition
 
+## Docker
+
 ### build local Docker image
 
 $ docker build -t kiada:latest .
@@ -76,3 +78,36 @@ $ docker run --cpus="0.5" ...
 ### set the maximum memory size available in the container
 
 $ docker run --memory="100m" ...
+
+## Google Kubernetes Engine
+
+Download and install the Google Cloud SDK, which includes the gcloud tool.
+
+$ gcloud config set compute/zone asia-southeast1-a
+$ gcloud config list
+
+### create a 3 node cluster
+
+$ gcloud container clusters create kiada --num-nodes 3
+
+$ gcloud compute instances list
+
+### scale number of nodes
+
+$ gcloud container clusters resize kiada --num-nodes 0
+
+### log into a node
+
+$ gcloud compute ssh gke-kiada-default-pool-c2e550a5-bdrj
+
+### deploy docker image to k8s cluster
+
+$ kubectl create deployment kiada --image=thedubshepherd/kiada:0.1
+
+### create a service to expose the app externally
+
+$ kubectl expose deployment kiada --type=LoadBalancer --port 8080
+
+### scale deployment
+
+$ kubectl scale deployment kiada --replicas=3
