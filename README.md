@@ -88,6 +88,7 @@ https://livebook.manning.com/book/kubernetes-in-action-second-edition/chapter-3/
 Download and install the Google Cloud SDK, which includes the gcloud tool.
 
 $ gcloud config set compute/zone asia-southeast1-a
+
 $ gcloud config list
 
 #### create a 3 node cluster
@@ -134,7 +135,9 @@ $ kubectl scale deployment kiada --replicas=3
 #### see results of scale-out
 
 $ kubectl get deploy
+
 $ kubectl get pods
+
 $ kubectl get pods -o wide
 
 ## Ch4 - Kubernetes API Objects
@@ -142,12 +145,21 @@ $ kubectl get pods -o wide
 https://livebook.manning.com/book/kubernetes-in-action-second-edition/chapter-4/
 
 $ kubectl get nodes
+
 $ kubectl get node kind-control-plane -o yaml
+
 $ kubectl get node kind-control-plane -o json
+
 $ kubectl proxy
+
 $ kubectl explain nodes
+
 $ kubectl explain node.spec
+
 $ kubectl describe node kind-worker-2
+
 $ kubectl get ev
+
 $ kubectl get ev -o wide
+
 $ kubectl get ev --field-selector type=Warning
