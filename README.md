@@ -163,3 +163,129 @@ $ kubectl get ev
 $ kubectl get ev -o wide
 
 $ kubectl get ev --field-selector type=Warning
+
+## Ch5 - Pods
+
+https://livebook.manning.com/book/kubernetes-in-action-second-edition/chapter-5/
+
+Tip: create yaml template from dry-run:
+
+$ kubectl run kiada --image=luksa/kiada:0.1 --dry-run=client -o yaml > mypod.yaml
+
+Creating objects by applying the manifest file to the cluster:
+
+$ kubectl apply -f pod.kiada.yaml
+
+Take a look at the yaml following object creation:
+
+$ kubectl get po kiada -o yaml
+
+Check the status of the pod:
+
+$ kubectl get pod kiada
+
+$ kubectl describe pod kiada
+
+$ kubectl get events
+
+Get the pod's IP address:
+
+$ kubectl get pod kiada -o wide
+
+The Kubernetes network model dictates that each pod is accessible from any other pod and that each node can reach any pod on any node in the cluster. To test the app, ssh to any node and make a request:
+
+$ gcloud compute ssh gke-kiada-default-pool-c2e550a5-cn0j
+
+> curl 10.112.5.4:8080
+
+Alternatively, create a one-off pod and call the app from there.
+Useful for testing pod-to-pod connectivity.
+
+$ kubectl run --image=curlimages/curl -it --restart=Never --rm client-pod curl 10.112.5.4:8080
+
+Connecting to pods via kubectl port forwarding:
+
+$ kubectl port-forward kiada 8080
+
+From another terminal:
+
+$ curl localhost:8080
+
+See logs:
+
+$ kubectl logs kiada
+
+$ kubectl logs kiada -f
+
+$ kubectl logs kiada --timestamps=true
+
+$ kubectl logs kiada --since=2m
+
+$ kubectl logs kiada --since-time=2020-02-01T09:50:00Z
+
+$ kubectl logs kiada --tail=10
+
+Copy files between local computer and k8s containers:
+
+$ kubectl cp kiada:html/index.html /tmp/index.html
+
+$ kubectl cp /tmp/index.html kiada:html/
+
+Invoke a single command in a container:
+
+$ kubectl exec kiada -- ps aux
+
+$ kubectl exec kiada -- curl -s localhost:8080
+
+Run a shell in a container:
+
+$ kubectl exec -it kiada -- bash
+
+Attach to a container:
+
+$ kubectl attach kiada
+
+Attach and pass stdin to the container:
+
+$ kubectl attach -i kiada-stdin
+
+Multi-container pods:
+
+$ kubectl port-forward kiada-ssl 8080 8443 9901
+
+Must specify container name when requesting logs:
+
+$ kubectl logs kiada-ssl -c kiada
+
+$ kubectl logs kiada-ssl -c envoy
+
+$ kubectl logs kiada-ssl --all-containers
+
+Similarly for exec:
+
+$ kubectl exec -it kiada-ssl -c envoy -- bash
+
+Delete a single pod by name:
+
+$ kubectl delete po kiada
+
+Delete multiple pods:
+
+$ kubectl delete po kiada-init kiada-init-slow
+
+Deleting objects by specifying the manifest file:
+
+$ kubectl delete -f pod.kiada-ssl.yaml
+
+Deleting objects from multiple manifest files:
+
+$ kubectl delete -f pod.kiada.yaml,pod.kiada-ssl.yaml
+
+Delete all pods:
+
+$ kubectl delete po --all
+
+Pods created by a Deployment will be restarted by k8s.
+Delete all objects:
+
+$ kubectl delete all --all
