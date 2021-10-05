@@ -289,3 +289,23 @@ Pods created by a Deployment will be restarted by k8s.
 Delete all objects:
 
 $ kubectl delete all --all
+
+## Ch6 - Managing the lifecycle of the Pod’s containers
+
+https://livebook.manning.com/book/kubernetes-in-action-second-edition/chapter-6/
+
+Deploy a pod:
+
+$ kubectl apply -f pod.kiada.yaml
+
+Display pod's phase:
+
+$ kubectl get po kiada -o yaml | grep phase
+
+$ kubectl describe po kiada
+
+$ kubectl get po kiada -o json | jq .status.conditions
+
+$ kubectl describe po kiada
+
+$ kubectl get po kiada -o json | jq .status.containerStatuses
