@@ -309,3 +309,17 @@ $ kubectl get po kiada -o json | jq .status.conditions
 $ kubectl describe po kiada
 
 $ kubectl get po kiada -o json | jq .status.containerStatuses
+
+## Ch7 - Mounting storage volumes into the Pod’s containers
+
+https://livebook.manning.com/book/kubernetes-in-action-second-edition/chapter-7
+
+Create a GCE Persistent Disk
+
+Disk must reside in same zone as cluster. To check:
+
+$ gcloud container clusters list
+
+Create a GCE Persistent Disk called quiz-data with 10GiB of space:
+
+$ gcloud compute disks create --size=10GiB --zone=asia-southeast1-a quiz-data
