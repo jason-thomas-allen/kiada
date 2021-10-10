@@ -323,3 +323,25 @@ $ gcloud container clusters list
 Create a GCE Persistent Disk called quiz-data with 10GiB of space:
 
 $ gcloud compute disks create --size=10GiB --zone=asia-southeast1-a quiz-data
+
+$ gcloud compute disks list
+
+## Ch8 - Persisting application data with PersistentVolumes
+
+https://livebook.manning.com/book/kubernetes-in-action-second-edition/chapter-8
+
+$ kubectl get pv
+
+$ kubectl get pv quiz-data -o yaml
+
+$ kubectl get pvc
+
+When using metadata: generateName instead of metaData: name
+
+Use k create instead of apply to create the pod.
+
+$ kubectl create -f pod.data-writer.yaml
+
+Dynamic provisioning - Storage Classes
+
+$ kubectl get sc
